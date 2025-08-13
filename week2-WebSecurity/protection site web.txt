@@ -1,0 +1,5 @@
+anti-CSRF
+	. rajouter logiciel anti-CSRF
+	. rajouter Cookie : same-site=lax
+anti-clock-jacking
+	. frame-ancestors 'none'
