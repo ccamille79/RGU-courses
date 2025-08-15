@@ -3,3 +3,6 @@ anti-CSRF
 	. rajouter Cookie : same-site=lax
 anti-clock-jacking
 	. frame-ancestors 'none'
+If the two
+parameters allow_url_fopen and allow_url_include are both set to the value On then the website would be
+vulnerable
