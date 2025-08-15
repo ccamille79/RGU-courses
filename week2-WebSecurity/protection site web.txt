@@ -6,3 +6,37 @@ anti-clock-jacking
 If the two
 parameters allow_url_fopen and allow_url_include are both set to the value On then the website would be
 vulnerable
+
+
+TOMCAT SECURITY MEASURES
+
+Security Measure 1: Remove default/unwanted Applications
+	
+		By default, Tomcat comes with following web applications, which may or not be required in a production
+environment. You can delete them to keep it clean and avoid any known security risk with Tomcat default
+application. These can be found under c:\xampp\tomcat\webapps and include ROOT, manager, examples…
+
+Security Measure 2: Add Secure & HttpOnly flag to Cookie
+
+	It is possible to steal or manipulate web application session and cookies without having a secure cookie. It’s a flag
+which is injected in the response header. This is done by adding below the line in session-config section of the
+c:\xampp\tomcat\conf\web.xml file
+	
+	<cookie-config>
+		<http-only>true</http-only>
+		<secure>true</secure>
+	</cookie-config>
+	
+Security Measure 3: Enable SSL/TLS
+
+	Serving web requests over HTTPS is essential to protect data between client and Tomcat. In order to make your web
+application accessible through HTTPS, you need to implement SSL certificate. Assuming, you already have keystore
+ready with the certificate, you can add below line in c:\xampp\tomcat\conf\server.xml file under Connector port
+section:
+	SSLEnabled="true" scheme="https" keystoreFile="ssl/bloggerflare.jks" keystorePass="chandan" clientAuth="false" sslProtocol="TLS"
+
+SOURCE CODE SECURITY MEASURES
+
+Security Measure 4: SQL injection
+
+Security Measure 5: XSS
