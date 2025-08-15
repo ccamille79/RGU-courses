@@ -1,0 +1,9 @@
+A inserer dans la console de l1inspecteur :
+
+
+function encryptForm(key, form){
+ var params = form_to_params(form);
+ if(params.length > 0)
+ return Aes.Ctr.encrypt(params, key, 128);
+ return false;
+ }
